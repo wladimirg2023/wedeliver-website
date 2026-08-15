@@ -5,3 +5,5 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 .brand-content img{background:transparent}.brand-card.dark .brand-content>img{filter:invert(1) hue-rotate(180deg)}
 .brand-grid{gap:24px}.brand-card{border-radius:12px;border:1px solid rgba(11,11,11,.08);box-shadow:0 18px 45px rgba(38,30,18,.08)}.brand-card.light .brand-overlay,.brand-card.cream .brand-overlay{background:linear-gradient(90deg,rgba(247,245,240,.99) 0%,rgba(247,245,240,.96) 42%,rgba(247,245,240,.18) 62%,transparent 76%)}.brand-card.light .brand-content,.brand-card.cream .brand-content{color:var(--text);width:52%}.brand-card .brand-bg{object-position:center right}.brand-card.mysushi .brand-content>img{filter:none}
+.brand-card{min-height:350px}.brand-card .brand-content{padding:32px 38px}.brand-card .brand-content>img{width:170px;height:92px}.brand-card .brand-content p{margin:8px 0;line-height:1.5}.brand-card .outline-button{margin-top:10px;padding:11px 12px}
+@media(max-width:900px){.brand-card{min-height:410px}.brand-card .brand-content{padding:38px 32px}}
