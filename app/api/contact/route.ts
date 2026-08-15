@@ -1,0 +1,1 @@
+export async function POST(request:Request){const f=await request.formData(),e=String(f.get("email")||""),m=String(f.get("message")||"");if(!e.includes("@")||m.trim().length<5)return Response.json({ok:false},{status:400});return Response.json({ok:true})}

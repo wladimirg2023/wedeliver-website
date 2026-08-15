@@ -1,0 +1,4 @@
+"use client";
+import Link from "next/link";import{useEffect,useState}from"react";
+const links=[["Home","/"],["Our Brands","/brands"],["Our Kitchens","/kitchens"],["About Us","/about"],["Partnerships","/partnerships"],["Careers","/careers"],["Contact","/contact"]];
+export function Header(){const[open,setOpen]=useState(false),[solid,setSolid]=useState(false);useEffect(()=>{const f=()=>setSolid(scrollY>40);addEventListener("scroll",f);return()=>removeEventListener("scroll",f)},[]);return <header className={`header ${solid||open?"solid":""}`}><Link className="wordmark" href="/">wedeliver</Link><nav className={open?"open":""}>{links.map(([n,h])=><Link key={h} href={h} onClick={()=>setOpen(false)}>{n}</Link>)}<Link className="button nav-order" href="/#brands">Order now</Link></nav><button className="menu" onClick={()=>setOpen(!open)} aria-label="Toggle menu" aria-expanded={open}><span/><span/></button></header>}

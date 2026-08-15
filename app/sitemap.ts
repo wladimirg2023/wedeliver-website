@@ -1,0 +1,1 @@
+import type{MetadataRoute}from"next";export default function sitemap():MetadataRoute.Sitemap{return["","about","brands","kitchens","partnerships","careers","contact","privacy","terms"].map(p=>({url:`https://wedeliver.ph/${p}`,lastModified:new Date(),changeFrequency:p===""?"weekly":"monthly",priority:p===""?1:.7}))}

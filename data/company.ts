@@ -1,0 +1,1 @@
+export const company={name:"Wedeliver Inc.",domain:"https://wedeliver.ph",email:"",phone:"",location:"Metro Manila, Philippines",socials:[],stats:[{value:"1,000+",label:"Orders served monthly"},{value:"2",label:"Kitchens in Metro Manila"},{value:"2",label:"Food brands"},{value:"100%",label:"Committed to quality"}]};

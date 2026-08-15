@@ -1,0 +1,1 @@
+export const locations=[{name:"Poblacion, Makati",lines:["Poblacion","Makati City","Metro Manila, Philippines"]},{name:"Shaw Boulevard",lines:["Shaw Boulevard","Mandaluyong City","Metro Manila, Philippines"]}] as const;
