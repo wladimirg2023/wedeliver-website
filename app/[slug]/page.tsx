@@ -1,25 +1,25 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import type {Metadata} from "next";
 import Image from "next/image";
-import {notFound} from "next/navigation";
+import {notFound,redirect} from "next/navigation";
 import {ContactForm} from "@/components/ContactForm";
 import {KitchenLocationsMap} from "@/components/KitchenLocationsMap";
 import {locations} from "@/data/locations";
 
 const content:Record<string,{eyebrow:string,title:string,intro:string,body:string[]}>= {
-  about:{eyebrow:"About Wedeliver",title:"Built for food people love.",intro:"A Philippine food company focused on creating and operating exceptional delivery-first brands.",body:["We believe quality is the result of disciplined preparation, capable teams and care at every step.","Across our growing kitchen network, we bring the same commitment to every brand and every order."]},
+  about:{eyebrow:"About Wedeliver",title:"ABOUT US",intro:"A Philippine food company focused on creating and operating exceptional delivery-first brands.",body:["We believe quality is the result of disciplined preparation, capable teams and care at every step.","Across our growing kitchen network, we bring the same commitment to every brand and every order."]},
   brands:{eyebrow:"Our brands",title:"We build the food brands of tomorrow.",intro:"Discover My Sushi and Pasta Bella—two food experiences united by quality, care and reliable delivery.",body:[]},
-  kitchens:{eyebrow:"Our kitchens",title:"Closer to our customers.",intro:"Our multi-brand kitchens serve key areas of Metro Manila efficiently.",body:[]},
   partnerships:{eyebrow:"Work with us",title:"Partnerships built around good food.",intro:"From office meals to venue collaborations, we create reliable food solutions for groups and communities.",body:["Corporate Orders · Catering · Condominium Partnerships · Hotels & Hospitality · Bars & Venues"]},
   careers:{eyebrow:"Careers",title:"Grow with us.",intro:"We’re building food brands people love—and we’re always looking for talented people who want to grow with us.",body:["Roles may include Kitchen Operations, Chefs and Cooks, Customer Service, Marketing, Business Development and Management."]},
   privacy:{eyebrow:"Legal",title:"Privacy Policy",intro:"How Wedeliver handles information submitted through this website.",body:["We collect only the information you choose to provide through our inquiry form and use it to respond to your request.","Contact details and retention information will be updated here before the production form is activated."]},
   terms:{eyebrow:"Legal",title:"Terms & Conditions",intro:"Terms governing use of the Wedeliver corporate website.",body:["This website provides general information about Wedeliver Inc., its brands and partnership opportunities.","Ordering transactions take place on the respective brand websites and are governed by their own terms."]},
 };
 
-export function generateStaticParams(){return [...Object.keys(content),"contact"].map(slug=>({slug}))}
+export function generateStaticParams(){return [...Object.keys(content),"contact","kitchens"].map(slug=>({slug}))}
 
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{
   const {slug}=await params,c=content[slug];
+  if(slug==="kitchens")return {title:"ABOUT US | Wedeliver Inc.",description:content.about.intro};
   return c?{title:`${c.title} | Wedeliver Inc.`,description:c.intro}:{title:"Contact | Wedeliver Inc."};
 }
 
@@ -42,20 +42,25 @@ function BrandsPage(){
   </div>;
 }
 
-function KitchensPage(){
-  return <article className="kitchen-map-card shared-map">
+function KitchensSection(){
+  return <section id="kitchens" className="about-page-section"><p className="eyebrow">Our kitchens</p><h2>Closer to our customers.</h2><p className="lead">Our multi-brand kitchens serve key areas of Metro Manila efficiently.</p><article className="kitchen-map-card shared-map">
     <div className="kitchen-map-copy"><h2>Our two kitchens</h2><div className="kitchen-location-list">{locations.map(location=><div key={location.name}><h3>{location.name}</h3><p>{location.lines.join(", ")}</p><p>Brands served: My Sushi and Pasta Bella</p></div>)}</div></div>
     <KitchenLocationsMap/>
-  </article>;
+  </article></section>;
+}
+
+function AboutSections(){
+  return <div className="about-page-sections"><KitchensSection/><section className="about-page-section team-section"><p className="eyebrow">Our Team</p><h2>Great food starts with great people.</h2><p>Behind WeDeliver is a passionate team of chefs, kitchen professionals, operations staff and customer service specialists working together every day.</p><p>From sourcing ingredients and preparing each dish to carefully packing orders and coordinating deliveries, every member of our team plays a part in creating a consistent experience for our customers.</p><p>We believe great food starts with great people. That’s why we focus on teamwork, attention to detail and continuous improvement across our kitchens. Our team combines culinary experience with a modern, delivery-first approach, allowing us to serve hundreds of customers while keeping the care and quality of a restaurant kitchen.</p><p>Different roles, different talents, one team — committed to making every order a great one.</p></section><section className="about-page-section news-section"><p className="eyebrow">News</p><article className="news-card"><h2>WeDeliver Opens New Branch on Shaw Boulevard</h2><p className="news-date">August 15, 2026 — Pasig City</p><p>WeDeliver is pleased to announce the opening of its new kitchen on Shaw Boulevard, Pasig, expanding its operations beyond Makati and bringing its food brands closer to more customers across Metro Manila.</p><p>The new location will serve MySushi and Pasta Bella, providing faster and more reliable delivery to Pasig, Mandaluyong and surrounding areas. This opening marks another important step in WeDeliver’s continued growth and expansion.</p></article></section></div>;
 }
 
 export default async function Page({params,searchParams}:{params:Promise<{slug:string}>,searchParams:Promise<{subject?:string}>}){
   const {slug}=await params;
+  if(slug==="kitchens")redirect("/about#kitchens");
   if(slug==="contact"){
     const query=await searchParams;
     return <main className="inner"><p className="eyebrow">Contact</p><h1>Let’s work together.</h1><p className="lead">Whether you’re looking to place a corporate order, discuss a partnership or learn more about Wedeliver, we’d love to hear from you.</p><ContactForm defaultType={query.subject==="partnership"?"Condominium Partnership":query.subject==="careers"?"Careers":"General Inquiry"}/></main>;
   }
   const page=content[slug];
   if(!page)notFound();
-  return <main className={`inner ${slug==="brands"?"brands-page":""}`}><p className="eyebrow">{page.eyebrow}</p><h1>{page.title}</h1><p className="lead">{page.intro}</p>{page.body.map(text=><p key={text}>{text}</p>)}{slug==="brands"&&<BrandsPage/>}{slug==="kitchens"&&<KitchensPage/>}{slug==="partnerships"&&<a className="button" href="/contact?subject=partnership">Become a partner →</a>}{slug==="careers"&&<a className="button" href="/contact?subject=careers">Send your application →</a>}</main>;
+  return <main className={`inner ${slug==="brands"?"brands-page":""}`}><p className="eyebrow">{page.eyebrow}</p><h1>{page.title}</h1><p className="lead">{page.intro}</p>{page.body.map(text=><p key={text}>{text}</p>)}{slug==="about"&&<AboutSections/>}{slug==="brands"&&<BrandsPage/>}{slug==="partnerships"&&<a className="button" href="/contact?subject=partnership">Become a partner →</a>}{slug==="careers"&&<a className="button" href="/contact?subject=careers">Send your application →</a>}</main>;
 }
